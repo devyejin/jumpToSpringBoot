@@ -1,24 +1,23 @@
-<!DOCTYPE html>
-<html lang="kor">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3"> <!-- 템플릿레이아웃  -->
     <h2>템플릿</h2>
-    <table>
-        <thead>
+    <table class="table">
+        <thead class="table-dark">
         <tr>
+            <th>번호</th>
             <th>제목</th>
             <th>작성일시</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="question : ${questionList}">
-            <td><a href="" th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a></td>
-            <td th:text="${question.getCreateDate}"></td>
+        <tr th:each="question, loop : ${questionList}">
+            <td th:text="${loop.count}">번호</td>
+            <td>
+                <a href="" th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+            </td>
+            <td th:text="${#temporals.format(question.getCreateDate, 'yyyy-MM-dd HH:mm')}"></td>
         </tr>
         </tbody>
     </table>
-</body>
+</div>
 </html>
