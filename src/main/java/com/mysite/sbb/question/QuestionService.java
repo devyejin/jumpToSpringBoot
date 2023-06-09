@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,5 +30,14 @@ public class QuestionService {
             throw new DataNotFoundException("question not found"); //런타임으로 로직은 정상 수행하면 호출한 계층으로 넘기기
             //여기서 서버에러500대 대신 404에러 던짐 ( Exception 처리 )
         }
+     }
+
+     public void saveQuestion(String subject, String content) { //이렇게 바로 Entitiy를 넘기지말고 DTO사용해야 안전 추후 보완하기
+         Question question = new Question();
+         question.setSubject(subject);
+         question.setContent(content);
+         question.setCreateDate(LocalDateTime.now());
+         this.questionRepository.save(question);
+
      }
 }
