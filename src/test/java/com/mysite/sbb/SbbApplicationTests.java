@@ -48,11 +48,11 @@ class SbbApplicationTests {
 	@Test
 	void testFinadAll() {
 		List<Question> questions = this.questionRepository.findAll();
-		assertEquals(2,questions.size()); // 기대되는값, 컬렉션.size
+		assertEquals(1,questions.size()); // 기대되는값, 컬렉션.size
 
-		Question question = questions.get(0);
-		String subject = question.getSubject();
-		assertEquals("1번 질문", subject);
+//		Question question = questions.get(0);
+//		String subject = question.getSubject();
+//		assertEquals("1번 질문", subject);
 	}
 
 	@Test

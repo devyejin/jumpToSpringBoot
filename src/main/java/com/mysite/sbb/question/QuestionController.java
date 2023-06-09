@@ -6,10 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor //생성자 주입
@@ -17,14 +21,19 @@ import java.util.List;
 @RequestMapping("/question")
 public class QuestionController {
 
-    //필드 주입 -> 생성자주입 이용,  @AutoWired의 경우 순환참조 발생 가능성으로 권장하지 않음
     private final QuestionService questionService;
 
     @GetMapping("/list")
     public String list(Model model) {
-
-        List<Question> questionList = questionService.getList();
+        List<Question> questionList = this.questionService.getList();
         model.addAttribute("questionList", questionList);
         return "question_list";
+    }
+
+    @GetMapping("/detail/{id}") //(value="question/detail/{id}") value 라는 속성 생략 가능
+    public String detail(Model model, @PathVariable("id") Integer id) {
+        Question question = this.questionService.getQuestion(id);
+        model.addAttribute("question", question);
+        return "question_detail";
     }
 }

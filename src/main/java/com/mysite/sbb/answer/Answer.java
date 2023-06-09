@@ -22,5 +22,5 @@ public class Answer {
     private LocalDateTime createDate;
 
     @ManyToOne
-    private Question question; //FK (질문 ENTITY 연결)
+    private Question question; //
 }

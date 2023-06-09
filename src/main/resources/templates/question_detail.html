@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet"  type="text/css" href="" th:href="@{/style.css}">
+<body>
+  <h1 th:text="${question.subject}">질문 제목</h1>
+  <div th:text="${question.content}">질문 내용</div>
+
+  <!--  답변이 있다면 출력하는 로직  질문에서 답변을 가져오기 때문에, question.answerList 임! -->
+  <!-- 타임리프 문법에서 #은 제공하는 기본객체임 list객체 제공, session, request등도 마찬가지로 #request로 접근 가능 -->
+    <div th:if="${#lists.size(question.answerList) ge 1 }">
+      <h5 th:text="|${#lists.size(question.answerList)} 개의 답변이 있습니다. |"></h5>
+      <div>
+          <ul>
+              <li th:each="answer : ${question.answerList}" th:text="${answer.content}">답변 내용 출력</li>
+          </ul>
+      </div>
+    </div>
+
+
+
+
+
+
+  <!--답변 등록 버튼 만들기 (아니 질문출력 페이지 하단에 답변을?! 댓글느낌인가-->
+  <!--  action링크 => 질문:답변 = 1:n 관계니까 -->
+  <form action="" th:action="@{|/answer/create/${question.id}|}" method="POST">
+      <!-- name이 서버로 가는 값 필드명이니까 ENTITIY랑 일치시켜야함 -->
+      <textarea name="content" id="content" rows="10"></textarea>
+      <input type="submit" value="답변 등록">
+  </form>
+</body>
+</html>
