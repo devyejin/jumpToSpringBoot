@@ -4,6 +4,7 @@ import com.mysite.sbb.answer.Answer;
 import com.mysite.sbb.answer.AnswerRepository;
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionRepository;
+import com.mysite.sbb.question.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +26,12 @@ class SbbApplicationTests {
 	private QuestionRepository questionRepository;
 
 	@Autowired
+	private QuestionService questionService;
+
+	@Autowired
 	private AnswerRepository answerRepository;
+
+
 
 //	@Test
 	void testJpa() {
@@ -168,6 +174,19 @@ class SbbApplicationTests {
 
 		assertEquals(1, answerList.size());
 		assertEquals("답변 컨텐츠",answerList.get(0).getContent());
+	}
+
+	@Test
+	void makeDummyData() {
+		for(int i=0; i<300; i++) {
+			String subject = String.format("테스트 데이터입니다 : [%03d]", i);
+			String content = "내용은 무슨 내용이 좋을까?" +
+					"강아지가 예뻐요?" +
+					"고양이가 예뻐요?" +
+					"사실 강아지가 최고입니다. 그 중 단연 푸들이 최고죠!";
+			this.questionService.create(subject, content);
+
+		}
 	}
 
 }

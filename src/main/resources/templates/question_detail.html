@@ -32,9 +32,10 @@
     </div>
     <!--답변 입력창-->
     <!--  action링크 => 질문:답변 = 1:n 관계니까 -->
-    <form method="POST" th:action="@{|/answer/create/${question.id}|}" class="my-3">
+    <form th:object=${answerForm} method="POST" th:action="@{|/answer/create/${question.id}|}" class="my-3">
+       <div th:replace="~{form_errors::formErrorsFragment}"></div>
         <!-- name이 서버로 가는 값 필드명이니까 ENTITIY랑 일치시켜야함 -->
-        <textarea id="content" name="content" rows="10" class="form-control"></textarea>
+        <textarea th:field="*{content}" rows="10" class="form-control"></textarea>
         <input type="submit" value="답변 등록" class="btn btn-primary my-2">
     </form>
 </div>

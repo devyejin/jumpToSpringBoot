@@ -1,0 +1,4 @@
+<!--th:fragment="formErrorsFragment" <-이게 fragment 이름 지정임 -->
+<div th:fragment="formErrorsFragment"  th:if="${#fields.hasAnyErrors()}" class="alert alert-danger" role="alert">
+  <div th:each="error:${#fields.allErrors()}" th:text="${error}">에러출력</div>
+</div>
