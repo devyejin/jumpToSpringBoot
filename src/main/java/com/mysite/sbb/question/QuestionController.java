@@ -22,7 +22,7 @@ public class QuestionController {
     @GetMapping("/list")
     //페이징 default = 0인 이유는, 스프링부트의 페이징은 0이 첫페에지
     public String list(Model model, @RequestParam(value="page", defaultValue = "0")int page) {
-        Page<Question> paging = this.questionService.getList(page);
+        Page<Question> paging = this.questionService.getList(page); //paging객체에는 해당 페이지 데이터 + 10개 데이터 출력함
         model.addAttribute("paging", paging);
         return "question_list";
     }

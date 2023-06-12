@@ -1,5 +1,5 @@
 <html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3"> <!-- 템플릿레이아웃  -->
+<div class="container my-3" layout:fragment="content"> <!-- 템플릿레이아웃  -->
     <h2>템플릿</h2>
     <table class="table">
         <thead class="table-dark">
@@ -10,39 +10,44 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="question, loop : ${paging}">
-            <td th:text="${loop.count}">번호</td>
+        <tr th:each="question, loop : ${paging}"> <!--  paging에는 page에 해당하는 10개 데이터 -->
+            <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}">게시물번호</td>
             <td>
-                <a href="" th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+                <a href="" th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}">제목</a>
+                <span class="text-danger small ms-2"
+                      th:if="${#lists.size(question.answerList) > 0}"
+                      th:text="|[${#lists.size(question.answerList)}]|">답변 수 표시</span>
             </td>
             <td th:text="${#temporals.format(question.getCreateDate, 'yyyy-MM-dd HH:mm')}"></td>
         </tr>
         </tbody>
     </table>
-<!--    페이지 버튼 페이징  처리-->
+    <!--    페이지 버튼 페이징  처리-->
     <div th:if="${!paging.isEmpty}">
         <!--        이전 버튼-->
         <ul class="pagination justify-content-center">
-            <li th:classappend="${!paging.hasPrevious} ? 'disabled'"  class="page-item"> <!-- 이전페이지가 없으면 class에 disabled 속성 추가-->
-                <a th:href="@{|?page=${paging.number-1}|}" class="page-link">
+            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                <!-- 이전페이지가 없으면 class에 disabled 속성 추가-->
+                <a class="page-link" th:href="@{|?page=${paging.number-1}|}">
                     <span>이전</span>
                 </a>
             </li>
             <!--            페이지 이동 숫자-->
-            <li th:each=" page :  ${#numberss.sequence(0, paging.totalPages-1)}"
+            <li class="page-item"
                 th:classappend="${page == paging.number} ? 'active'"
-                class="page-item"> <!-- #numberss.sequence 는 (시작, 끝) 시작부터 끝 번호까지 루프 만들어냄 -->
-                <a th:href="@{|?page=${page}|}" th:text="${page}" class="page-link"></a>
+                th:each=" page :  ${#numbers.sequence(0, paging.totalPages-1)}"
+                th:if="${page >= paging.number -5 and page <= paging.number + 5 }"> <!-- #numberss.sequence 는 (시작, 끝) 시작부터 끝 번호까지 루프 만들어냄 -->
+                <a class="page-link" th:href="@{|?page=${page}|}" th:text="${page}"></a>
             </li>
             <!--            다음 버튼-->
-            <li th:classappend="${!paging.hasNext} ? 'disabled'"  class="page-item">
-                <a th:href="@{|?page=${paging.number+1|}" class="page-link">
+            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
                     <span>다음</span>
                 </a>
             </li>
         </ul>
 
     </div>
-    <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
+    <a class="btn btn-primary" th:href="@{/question/create}">질문 등록하기</a>
 </div>
 </html>
