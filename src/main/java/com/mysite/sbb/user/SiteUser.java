@@ -17,7 +17,7 @@ public class SiteUser { //스프링 시큐리티에 User 클래스가 존재해�
     private Long id;
 
     @Column(unique = true) // 칼럼 제약조건 unique
-    private  String usrname;
+    private  String username;
     private  String password;
 
     @Column(unique = true) // 칼럼 제약조건 unique

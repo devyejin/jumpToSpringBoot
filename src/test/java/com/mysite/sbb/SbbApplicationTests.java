@@ -5,6 +5,8 @@ import com.mysite.sbb.answer.AnswerRepository;
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionRepository;
 import com.mysite.sbb.question.QuestionService;
+import com.mysite.sbb.user.SiteUser;
+import com.mysite.sbb.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +33,17 @@ class SbbApplicationTests {
 	@Autowired
 	private AnswerRepository answerRepository;
 
+	@Autowired
+	private UserRepository userRepository;
+
+	@Test
+	void signUpTest() {
+		SiteUser user = new SiteUser();
+		user.setUsername("test user");
+		user.setPassword("1234");
+		user.setEmail("222@naver.com");
+		this.userRepository.save(user);
+	}
 
 
 //	@Test
