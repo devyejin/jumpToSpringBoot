@@ -10,7 +10,7 @@
         <li class="nav-item">
           <a sec:authorize="isAnonymous()"  th:href="@{/user/login}" class="nav-link">로그인</a>
           <a sec:authorize="isAuthenticated()"  th:href="@{/user/logout}" class="nav-link">로그아웃</a>
-<!--          <div th:if="${}"  th:text="|${} 님 환영합니다|"></div> 로그아웃 기능 구현 하고 해봐야지 -->
+          <div th:if="${loginUserName != null} "  th:text="|${loginUserName} 님 환영합니다|">회원명 인사멘트</div>
         </li>
         <li class="nav-item">
           <a  class="nav-link" th:href="@{/user/signup}">회원가입</a>
