@@ -62,4 +62,16 @@ public class UserController {
 
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login_form";
+    }
+    //실제 로그인처리를 하는 @PostMapping은 스프링 시큐리티가 처리하므로 메서드로 구현할 필요가 없다.
+
+//    @GetMapping("/user/logout")
+//    public String logout() {
+//        return "redirect:/question/list";
+//    }
+    //로그아웃 기능 또한 스프링시큐리티가 함 ( 로직 처리니까 ) SecurityConfig로 가자
+
 }
