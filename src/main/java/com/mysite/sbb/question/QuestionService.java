@@ -2,6 +2,7 @@ package com.mysite.sbb.question;
 
 
 import com.mysite.sbb.DataNotFoundException;
+import com.mysite.sbb.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -40,11 +41,12 @@ public class QuestionService {
         }
      }
 
-     public void create(String subject, String content) { //이렇게 바로 Entitiy를 넘기지말고 DTO사용해야 안전 추후 보완하기
+     public void create(String subject, String content, SiteUser author) { //이렇게 바로 Entitiy를 넘기지말고 DTO사용해야 안전 추후 보완하기
          Question question = new Question();
          question.setSubject(subject);
          question.setContent(content);
          question.setCreateDate(LocalDateTime.now());
+         question.setAuthor(author);
          this.questionRepository.save(question);
 
      }
