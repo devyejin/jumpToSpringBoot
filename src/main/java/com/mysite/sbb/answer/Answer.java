@@ -1,5 +1,6 @@
 package com.mysite.sbb.answer;
 
+import com.mysite.sbb.user.SiteUser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,4 +24,7 @@ public class Answer {
 
     @ManyToOne
     private Question question; //
+
+    @ManyToOne
+    private SiteUser author; //한명의 사용자가 여러 댓글 가능
 }

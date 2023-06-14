@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Slf4j
 @Controller
@@ -27,7 +28,9 @@ public class AnswerController {
         public String createAnswer(
                 Model model,
                 @PathVariable("id") Integer id,
-                @Valid AnswerForm answerForm, BindingResult bindingResult)
+                @Valid AnswerForm answerForm, BindingResult bindingResult,
+                Principal principal
+                )
         {
                 //해당 질문을 가져와야해서 questionService가 필요
                 Question question = this.questionService.getQuestion(id);
@@ -40,7 +43,7 @@ public class AnswerController {
 
                 //정상로직
 
-                this.answerService.create(question,answerForm.getContent());
+//                this.answerService.create(question,answerForm.getContent());
                 //답변 저장하고나면 보낼 페이지, 질문 페이지
                 return String.format("redirect:/question/detail/%s",id); //문자열 형식 지정해주는 메서드
 

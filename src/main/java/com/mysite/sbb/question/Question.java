@@ -1,6 +1,7 @@
 package com.mysite.sbb.question;
 
 import com.mysite.sbb.answer.Answer;
+import com.mysite.sbb.user.SiteUser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,9 @@ public class Question {
     @Column(columnDefinition = "TEXT")
     private String content;
     private LocalDateTime createDate;
+
+    @ManyToOne
+    private SiteUser author; //Entity관계를 생각하면, 한명의 사용자가 여러 질문가능
 
     //질문은 질문하나당 여러개의 답변을 가질 수 있으므로 컬렉션으로
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
