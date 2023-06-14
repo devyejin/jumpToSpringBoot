@@ -197,7 +197,7 @@ class SbbApplicationTests {
 					"강아지가 예뻐요?" +
 					"고양이가 예뻐요?" +
 					"사실 강아지가 최고입니다. 그 중 단연 푸들이 최고죠!";
-			this.questionService.create(subject, content);
+			this.questionService.create(subject, content,null);
 
 		}
 	}

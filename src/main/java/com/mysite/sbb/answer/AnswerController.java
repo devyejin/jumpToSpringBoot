@@ -2,8 +2,11 @@ package com.mysite.sbb.answer;
 
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionService;
+import com.mysite.sbb.user.SiteUser;
+import com.mysite.sbb.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,14 +27,23 @@ public class AnswerController {
         private final QuestionService questionService; //answer등록하는데 왜 question?
         private final AnswerService answerService;
 
+        private final UserService userService;
+
+        @PreAuthorize("isAuthenticated()")
         @PostMapping("/create/{id}")
         public String createAnswer(
                 Model model,
                 @PathVariable("id") Integer id,
                 @Valid AnswerForm answerForm, BindingResult bindingResult,
-                Principal principal
+                        Principal principal
                 )
         {
+                //작성자 정보
+//                String username = principal.getName();
+//                SiteUser author = this.userService.getUser(username);
+                SiteUser siteUser = this.userService.getUser(principal.getName());
+
+
                 //해당 질문을 가져와야해서 questionService가 필요
                 Question question = this.questionService.getQuestion(id);
 
@@ -43,7 +55,7 @@ public class AnswerController {
 
                 //정상로직
 
-//                this.answerService.create(question,answerForm.getContent());
+                this.answerService.create(question,answerForm.getContent(),siteUser);
                 //답변 저장하고나면 보낼 페이지, 질문 페이지
                 return String.format("redirect:/question/detail/%s",id); //문자열 형식 지정해주는 메서드
 

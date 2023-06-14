@@ -1,8 +1,8 @@
 package com.mysite.sbb.user;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,58 +20,50 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/signup") //회원가입 페이지
+    @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm) {
         return "signup_form";
     }
 
     @PostMapping("/signup")
     public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
-        //Validation 검증
+
+        //사용자 입력값 에러가 있으면 (Se->Re 보내지 않고 되돌려 보냄), 에러메시지는 어차피 Valid에 걸어놨음
         if(bindingResult.hasErrors()) {
             return "signup_form";
         }
 
-        //Validation 통과 후 로직
+        //@Valid로 처리못하는건 직접 bindingResult 객체를 사용해서 에러메시지 전달
         if(!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
-            //rejectValue(필드명,오류코드,에러메시지) -> 오류코드는 잘 만들어줘야함,여기서 쓴건 임시
-            bindingResult.rejectValue("password2","passwordInCorrect","비밀번호와 확인비밀번호가 일치하지 않습니다.");
+            bindingResult.rejectValue("password1","passwordInCorrect","비밀번호와 확인 비밀번호가 일치하지 않습니다.");
             return "signup_form";
         }
 
-        //정상 로직
+        //unique 제약조건 위반하면 DBMS에서 Exception넘어옴 => 무결성 DataIntegrityViolationException
         try {
-            this.userService.create(userCreateForm.getUsername(),
-                    userCreateForm.getEmail(),
-                    userCreateForm.getPassword1());
-
+            this.userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(),userCreateForm.getPassword1());
         } catch (DataIntegrityViolationException e) {
-            //unique 위반시, 이미 존재하는 username 혹은 email임을 알려주기
-
-            log.error("error={}",e.getMessage());
+            //클라이언트한테 중복 ID,EMAIL이니 다시하라고 보내주기
+            //난 구체적으로 어떤 필드가 오류라 알려주고싶었는데 보안 등 탈취 이런거때문에 특정값 알려주지 않는게 좋은 로직임
+            log.error("error={}", e.getMessage());
             bindingResult.reject("signupFaild","이미 등록된 사용자입니다.");
             return "signup_form";
-
-        } catch (Exception e) {
+        } catch (Exception e) { //프로그램이 죽으면 안되니까 모든 에러 잡아주기
             log.error("error={}",e.getMessage());
-            bindingResult.reject("signupFaild",e.getMessage());
+            bindingResult.reject("signupFaild","에러가 발생했습니다.");
             return "signup_form";
         }
 
-        return "redirect:/"; //회원가입 성공하면 home으로 보냄
-
+        return "redirect:/";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/login") //POST처리는 스프링시큐리티가 해줌
     public String login() {
         return "login_form";
     }
-    //실제 로그인처리를 하는 @PostMapping은 스프링 시큐리티가 처리하므로 메서드로 구현할 필요가 없다.
 
-//    @GetMapping("/user/logout")
-//    public String logout() {
-//        return "redirect:/question/list";
-//    }
-    //로그아웃 기능 또한 스프링시큐리티가 함 ( 로직 처리니까 ) SecurityConfig로 가자
+    //로그아웃 처리 -> 스프링 시큐리티 SecurityConfig로 가자
+
+
 
 }

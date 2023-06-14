@@ -2,24 +2,25 @@ package com.mysite.sbb.user;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.annotation.processing.Generated;
 import javax.persistence.*;
-import javax.xml.transform.sax.SAXResult;
 
-@Setter
+
 @Getter
+@Setter
 @Entity
-public class SiteUser { //스프링 시큐리티에 User 클래스가 존재해서 혼동방지를 위해
+public class SiteUser { //회원정보 저장하는 엔티티
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //JPA, DB에서 PK 자동 생성되도록
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true) // 칼럼 제약조건 unique
-    private  String username;
-    private  String password;
+    @Column(unique=true)
+    private String username;
+    private String password;
 
-    @Column(unique = true) // 칼럼 제약조건 unique
+    @Column(unique = true)
     private String email;
+
 }

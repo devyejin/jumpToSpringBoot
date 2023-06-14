@@ -17,13 +17,12 @@ public class AnswerService {
 
     private final AnswerRepository answerRepository; //@RequiredArgsConstructor 어노테이션을 사용할 때는 final
 
-    public Answer create(Question question, String content, SiteUser author) {
+    public void create(Question question, String content, SiteUser author) {
         Answer answer = new Answer(); // Answer DTO를 만들고
         answer.setContent(content);
         answer.setCreateDate(LocalDateTime.now());
         answer.setQuestion(question);
         answer.setAuthor(author);
         this.answerRepository.save(answer);
-        return answer;
     }
 }

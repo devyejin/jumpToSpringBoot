@@ -23,8 +23,8 @@ public class Answer {
     private LocalDateTime createDate;
 
     @ManyToOne
-    private Question question; //
+    private Question question;
 
     @ManyToOne
-    private SiteUser author; //한명의 사용자가 여러 댓글 가능
+    private SiteUser author;
 }
