@@ -30,3 +30,13 @@
 
 ## 완성후 추가 할 로직
 - ADMIN, USER 권한에 따른 기능 제어 구현
+
+## 보완해야할 부분
+- nav 상단에 로그인한 사용자명+환영합니다 출력
+- 메인페이지의 경우, 아래 로직을 사용
+  - if(principal != null) {
+    SiteUser  user = this.userService.getUser(principal.getName());
+    model.addAttribute("loginUsername",user.getUsername());
+    }
+- nav는 공통템플릿인데, url이 변경되면 이 데이터가 없기 때문에 url마다 반복적으로 코드를 넣어줘야함
+- 좋은 해결방법이 없을까? 서버에 세션객체를 만들고, 그 세션객체를 넘기나?

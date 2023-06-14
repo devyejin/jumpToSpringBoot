@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor //생성자 주입
@@ -27,14 +28,29 @@ public class QuestionController {
 
     @GetMapping("/list")
     //페이징 default = 0인 이유는, 스프링부트의 페이징은 0이 첫페에지
-    public String list(Model model, @RequestParam(value="page", defaultValue = "0")int page) {
+    public String list(Model model, @RequestParam(value="page", defaultValue = "0")int page, Principal principal) {
+
+
+        if(principal != null) {
+            SiteUser  user = this.userService.getUser(principal.getName());
+            model.addAttribute("loginUsername",user.getUsername());
+        }
+
         Page<Question> paging = this.questionService.getList(page); //paging객체에는 해당 페이지 데이터 + 10개 데이터 출력함
         model.addAttribute("paging", paging);
+
         return "question_list";
     }
 
     @GetMapping("/detail/{id}") //(value="question/detail/{id}") value 라는 속성 생략 가능
-    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) { //AnswerForm 빈객체라도 넘겨줘야 에러안남
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm, Principal principal) { //AnswerForm 빈객체라도 넘겨줘야 에러안남
+
+        if(principal != null) {
+            SiteUser  user = this.userService.getUser(principal.getName());
+            model.addAttribute("loginUsername",user.getUsername());
+        }
+
+
         Question question = this.questionService.getQuestion(id);
         model.addAttribute("question", question);
         return "question_detail";
