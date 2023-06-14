@@ -2,6 +2,7 @@ package com.mysite.sbb.answer;
 
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionService;
+import com.mysite.sbb.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Slf4j
 @Controller
@@ -23,12 +25,19 @@ public class AnswerController {
         private final QuestionService questionService; //answer등록하는데 왜 question?
         private final AnswerService answerService;
 
+        private final UserService userService;
+
         @PostMapping("/create/{id}")
         public String createAnswer(
                 Model model,
                 @PathVariable("id") Integer id,
-                @Valid AnswerForm answerForm, BindingResult bindingResult)
+                @Valid AnswerForm answerForm, BindingResult bindingResult,
+                        Principal principal
+                )
         {
+                //작성자 정보 가져오기
+
+
                 //해당 질문을 가져와야해서 questionService가 필요
                 Question question = this.questionService.getQuestion(id);
 
