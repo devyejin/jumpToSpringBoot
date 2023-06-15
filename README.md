@@ -39,4 +39,6 @@
     model.addAttribute("loginUsername",user.getUsername());
     }
 - nav는 공통템플릿인데, url이 변경되면 이 데이터가 없기 때문에 url마다 반복적으로 코드를 넣어줘야함
-- 좋은 해결방법이 없을까? 서버에 세션객체를 만들고, 그 세션객체를 넘기나?
+- 좋은 해결방법이 없을까? 서버에 세션객체를 만들고, 그 세션객체를 넘기나? AOP를 적용하나?
+- 타임리프의 #authentication 객체를 이용하면 더 간단함. Controller에서 Principal객체를 넘겨주지 않아도
+  타임리프 템플릿에서 Principal 객체를 내부적으로 참조해줌..

@@ -25,6 +25,8 @@ public class Question {
     private String content;
     private LocalDateTime createDate;
 
+    private LocalDateTime modifyDate;
+
     @ManyToOne
     private SiteUser author; //Entity관계를 생각하면, 한명의 사용자가 여러 질문가능
 

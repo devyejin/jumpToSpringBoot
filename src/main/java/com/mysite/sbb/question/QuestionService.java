@@ -50,4 +50,11 @@ public class QuestionService {
          this.questionRepository.save(question);
 
      }
+
+     public void modify(Question question, String subject, String content) {
+         question.setSubject(subject);
+         question.setContent(content);
+         question.setModifyDate(LocalDateTime.now());
+         this.questionRepository.save(question); //기존 question객체에 일부 수정이니까 (id값이 있쥬)
+    }
 }
