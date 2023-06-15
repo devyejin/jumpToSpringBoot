@@ -57,4 +57,8 @@ public class QuestionService {
          question.setModifyDate(LocalDateTime.now());
          this.questionRepository.save(question); //기존 question객체에 일부 수정이니까 (id값이 있쥬)
     }
+
+    public void delete(Question question) {
+        this.questionRepository.delete(question);
+    }
 }

@@ -18,9 +18,26 @@
                 <a th:href="@{|/question/modify/${question.id}|}" sec:authorize="isAuthenticated()"
                     th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
                     th:text="수정" class="btn btn-sm btn-outline-secondary">수정 버튼</a>
+                <a href="javascript:void(0);" th:data-uri="@{|/question/delete/${question.id}|}"
+                   sec:authorize="isAuthenticated()" th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                   th:text="삭제"
+                   class="delete btn btn-sm btn-outline-secondary" >삭제 버튼</a>
             </div>
         </div>
     </div>
+<!--    삭제버튼에 사용될 자바스크립트-->
+    <script layout:fragment="script" type="text/javascript">
+        const delete_elements = document.getElementsByClassName("delete");
+        // iterator임 delete버튼이 여러개인 경우도 적용되도록
+        Array.from(delete_elements).forEach(function (element) {
+            element.addEventListener('click',function () {
+                if(confirm("정말로 삭제하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
+        });
+    </script>
+
 
     <!--  답변이 있다면 출력하는 로직  질문에서 답변을 가져오기 때문에, question.answerList 임! -->
     <!-- 타임리프 문법에서 #은 제공하는 기본객체임 list객체 제공, session, request등도 마찬가지로 #request로 접근 가능 -->
