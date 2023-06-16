@@ -56,6 +56,12 @@
                     </div>
                 </div>
             </div>
+            <div class="my-3">
+                <a th:href="@{|/answer/modify/${answer.id}|}" sec:authorize="isAuthenticated()"
+                   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+                   class="btn btn-sm btn-outline-secondary"
+                   th:text="수정">수정</a>
+            </div>
         </div>
     </div>
     <!--답변 입력창-->
