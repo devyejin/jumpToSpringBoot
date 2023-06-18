@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor //생성자 주입
@@ -60,5 +61,13 @@ public class QuestionService {
 
     public void delete(Question question) {
         this.questionRepository.delete(question);
+    }
+
+    public void vote(Question question, SiteUser siteUser) {
+//        Set<SiteUser> voter = question.getVoter();
+//        voter.add(siteUser);
+
+        question.getVoter().add(siteUser);
+        this.questionRepository.save(question);
     }
 }

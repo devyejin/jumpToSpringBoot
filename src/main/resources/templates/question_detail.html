@@ -19,10 +19,11 @@
                     <div th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}">질문 작성 날짜</div>
                 </div>
             </div>
-            <div>
-                <a class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-                   th:href="@{|/question/modify/${question.id}|}"
-                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}" th:text="수정">수정 버튼</a>
+            <div class="my-3">
+                <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                   th:data-uri="@{|/question/vote/${question.id}|}">추천
+                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(question.voter)}"></span>
+                </a>
                 <a class="delete btn btn-sm btn-outline-secondary" href="javascript:void(0);"
                    sec:authorize="isAuthenticated()"
                    th:data-uri="@{|/question/delete/${question.id}|}"
@@ -54,6 +55,9 @@
                 </div>
             </div>
             <div class="my-3">
+                <a href="javascript:void(0);" th:data-uri="@{|/answer/vote/${answer.id}|}"
+                   class="recommend btn btn-sm btn-outline-secondary">추천
+                <span th:text="${#lists.size(answer.voter)}" class="badge rounded-pill bg-success"></span></a>
                 <a class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
                    th:href="@{|/answer/modify/${answer.id}|}"
                    th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
@@ -78,15 +82,26 @@
     </form>
 </div>
 </div>
-    <!--    삭제버튼에 사용될 자바스크립트-->
+   
     <script layout:fragment="script" type="text/javascript">
+        <!--    삭제 버튼에 사용될 JS-->
         const delete_elements = document.getElementsByClassName("delete");
         // iterator임 delete버튼이 여러개인 경우도 적용되도록
         console.log(delete_elements);
-        Array.from(delete_elements).forEach(function (element) {
-            element.addEventListener('click', function () {
+        Array.from(delete_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
                 console.log("클릭");
                 if (confirm("정말로 삭제하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
+        });
+        
+        <!-- 추천 버튼에 사용할 JS-->
+        const recomment_elements = document.getElementsByClassName("recommend");
+        Array.from(recomment_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if(confirm("정말로 추천하시겠습니까?")) {
                     location.href = this.dataset.uri;
                 };
             });

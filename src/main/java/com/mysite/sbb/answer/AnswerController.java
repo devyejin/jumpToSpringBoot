@@ -131,4 +131,19 @@ public class AnswerController {
         return String.format("redirect:/question/detail/%s",answer.getQuestion().getId());
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String answerVote(@PathVariable("id") Integer id,
+                             Principal principal) {
+
+        Answer answer = this.answerService.getAnswer(id);
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        //자꾸 여기서 answer에 siteUser를 담아서 보내려고 하는데 ㄴㄴ임 이건 서비스에서 처리할 로직!
+        //단일 책임원칙 기억하자! POJO방식! 여기는 클라이언트단에서 받아서 처리할 부분, 인증 인가 이런것만 처리하고
+        //비즈니스는 Service에서 처리할 로직이야!
+        this.answerService.vote(answer, siteUser);
+
+        return String.format("redirect:/question/detail/%s",answer.getQuestion().getId());
+
+    }
 }
