@@ -66,7 +66,7 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String modify(AnswerForm answerForm, //요청으로부터 DTO받아올때는 선두에 놔야함
+    public String answerModify(AnswerForm answerForm, //요청으로부터 DTO받아올때는 선두에 놔야함
                          @PathVariable("id") Integer id,
                          Principal principal
                          ) {
@@ -87,7 +87,7 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public String modify(@Valid AnswerForm answerForm,
+    public String answerModify(@Valid AnswerForm answerForm,
                          BindingResult bindingResult,
                          @PathVariable("id") Integer id,
                          Principal principal) {
@@ -111,6 +111,24 @@ public class AnswerController {
         this.answerService.modify(answer, answerForm.getContent()); //기존 답변, 새로작성한 답변내용
 
         return String.format("redirect:/question/detail/%s",answer.getQuestion().getId()); //질문페이지 출력이니까
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String answerDelete(@PathVariable("id") Integer id,
+                         Principal principal) {
+
+        log.info("delete 버튼 클릭되고 있니?");
+        Answer answer = this.answerService.getAnswer(id);
+        
+        //더블 체킹
+        if(!answer.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+
+        this.answerService.delete(answer);
+
+        return String.format("redirect:/question/detail/%s",answer.getQuestion().getId());
     }
 
 }

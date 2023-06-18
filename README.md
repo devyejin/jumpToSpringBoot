@@ -43,3 +43,6 @@
 - 타임리프의 #authentication 객체를 이용하면 더 간단함. Controller에서 Principal객체를 넘겨주지 않아도
   타임리프 템플릿에서 Principal 객체를 내부적으로 참조해줌..
 
+
+## 궁금한 점
+- 답변,질문 삭제 Controller에서 POST, DELETE 요청이 아닌 GET으로 처리한 이유가 뭘까?
