@@ -1,27 +1,33 @@
 <html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
-<div class="container my-3">
-    <!-- 질문  -->
-    <h2 class="border-bottom py-2" th:text="${question.subject}">질문 제목</h2>
-    <div class="card my-3">
-        <div class="card-body">
-            <div class="card-text" style="white-space: pre-line;" th:text="${question.content}">질문 내용</div>
-            <div class="d-flex justify-content-end">
-                <div class="badge bg-light text-dark p-2 text-start">
-                    <div class="mb-2">
-                        <span th:if="${question.author != null}" th:text="${question.author.username}">작성자</span>
+<div class="container my-3" layout:fragment="content">
+    <div class="container my-3">
+        <!-- 질문  -->
+        <h2 class="border-bottom py-2" th:text="${question.subject}">질문 제목</h2>
+        <div class="card my-3">
+            <div class="card-body">
+                <div class="card-text" style="white-space: pre-line;" th:text="${question.content}">질문 내용</div>
+                <div class="d-flex justify-content-end">
+                    <div class="badge bg-light text-dark p-2 text-start mx-3" th:if="${question.modifyDate != null}">
+                        <div class="mb-2">수정 일자</div>
+                        <div th:text="${#temporals.format(question.modifyDate, 'yyyy-MM-dd HH:mm')}">수정 날짜 출력 칸</div>
+                    </div>
+                    <div class="badge bg-light text-dark p-2 text-start">
+                        <div class="mb-2">
+                            <span th:if="${question.author != null}" th:text="${question.author.username}">작성자</span>
+                        </div>
                     </div>
                     <div th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}">질문 작성 날짜</div>
                 </div>
             </div>
             <div>
-                <a th:href="@{|/question/modify/${question.id}|}" sec:authorize="isAuthenticated()"
-                    th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
-                    th:text="수정" class="btn btn-sm btn-outline-secondary">수정 버튼</a>
-                <a href="javascript:void(0);" th:data-uri="@{|/question/delete/${question.id}|}"
-                   sec:authorize="isAuthenticated()" th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
-                   th:text="삭제"
-                   class="delete btn btn-sm btn-outline-secondary" >삭제 버튼</a>
+                <a class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                   th:href="@{|/question/modify/${question.id}|}"
+                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}" th:text="수정">수정 버튼</a>
+                <a class="delete btn btn-sm btn-outline-secondary" href="javascript:void(0);"
+                   sec:authorize="isAuthenticated()"
+                   th:data-uri="@{|/question/delete/${question.id}|}"
+                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                   th:text="삭제">삭제 버튼</a>
             </div>
         </div>
     </div>
@@ -31,10 +37,14 @@
     <div th:if="${#lists.size(question.answerList) ge 1 }">
         <h5 class="border-bottom my-3 py-2" th:text="|${#lists.size(question.answerList)} 개의 답변이 있습니다. |"></h5>
         <!-- 답변 출력-->
-        <div th:each="answer : ${question.answerList}">
+        <div class="card my-3" th:each="answer : ${question.answerList}">
             <div class="card-body">
                 <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}">답변 내용</div>
                 <div class="d-flex justify-content-end">
+                    <div th:if="${answer.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                        <div class="mb-2">수정 일자</div>
+                        <div th:text="${#temporals.format(answer.modifyDate,'yyyy-MM-dd HH:mm')}">수정 일자 출력 칸</div>
+                    </div>
                     <div class="badge bg-light text-dark p-2 text-start">
                         <div class="mb-2">
                             <span th:if="${answer.author != null}" th:text="${answer.author.username}">작성자</span>
@@ -44,41 +54,42 @@
                 </div>
             </div>
             <div class="my-3">
-                <a th:href="@{|/answer/modify/${answer.id}|}" sec:authorize="isAuthenticated()"
+                <a class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                   th:href="@{|/answer/modify/${answer.id}|}"
                    th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
-                   class="btn btn-sm btn-outline-secondary"
                    th:text="수정">수정</a>
-                <a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${answer.id}|}"
+                <a class="delete btn btn-sm btn-outline-secondary" href="javascript:void(0);"
                    sec:authorize="isAuthenticated()"
+                   th:data-uri="@{|/answer/delete/${answer.id}|}"
                    th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
-                   class="delete btn btn-sm btn-outline-secondary"
                    th:text="삭제">삭제</a>
             </div>
         </div>
     </div>
     <!--답변 입력창-->
     <!--  action링크 => 질문:답변 = 1:n 관계니까 -->
-    <form th:object=${answerForm} method="POST" th:action="@{|/answer/create/${question.id}|}" class="my-3">
-       <div th:replace="~{form_errors::formErrorsFragment}"></div>
+    <form class="my-3" method="POST" th:action="@{|/answer/create/${question.id}|}" th:object=${answerForm}>
+        <div th:replace="~{form_errors::formErrorsFragment}"></div>
         <!-- name이 서버로 가는 값 필드명이니까 ENTITIY랑 일치시켜야함 -->
-        <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" rows="10" class="form-control"></textarea>
-        <textarea sec:authorize="isAuthenticated()" th:field="*{content}" rows="10" class="form-control"></textarea>
-        <input type="submit" value="답변 등록" class="btn btn-primary my-2">
+        <textarea class="form-control" disabled rows="10" sec:authorize="isAnonymous()"
+                  th:field="*{content}"></textarea>
+        <textarea class="form-control" rows="10" sec:authorize="isAuthenticated()" th:field="*{content}"></textarea>
+        <input class="btn btn-primary my-2" type="submit" value="답변 등록">
     </form>
 </div>
 </div>
-<!--    삭제버튼에 사용될 자바스크립트-->
-<script layout:fragment="script" type="text/javascript">
-    const delete_elements = document.getElementsByClassName("delete");
-    // iterator임 delete버튼이 여러개인 경우도 적용되도록
-    console.log(delete_elements);
-    Array.from(delete_elements).forEach(function (element) {
-        element.addEventListener('click',function() {
-            console.log("클릭");
-            if(confirm("정말로 삭제하시겠습니까?")) {
-                location.href = this.dataset.uri;
-            };
+    <!--    삭제버튼에 사용될 자바스크립트-->
+    <script layout:fragment="script" type="text/javascript">
+        const delete_elements = document.getElementsByClassName("delete");
+        // iterator임 delete버튼이 여러개인 경우도 적용되도록
+        console.log(delete_elements);
+        Array.from(delete_elements).forEach(function (element) {
+            element.addEventListener('click', function () {
+                console.log("클릭");
+                if (confirm("정말로 삭제하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
         });
-    });
-</script>
+    </script>
 </html>
