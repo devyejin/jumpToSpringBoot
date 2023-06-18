@@ -58,9 +58,9 @@ public class AnswerController {
 
         //정상로직
 
-        this.answerService.create(question, answerForm.getContent(), siteUser);
+        Answer answer = this.answerService.create(question, answerForm.getContent(), siteUser);
         //답변 저장하고나면 보낼 페이지, 질문 페이지
-        return String.format("redirect:/question/detail/%s", id); //문자열 형식 지정해주는 메서드
+        return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(), answer.getId()); //문자열 형식 지정해주는 메서드
 
     }
 
@@ -110,7 +110,7 @@ public class AnswerController {
         // 매개변수로 answer PK 를 넘기는게 더 깔끔하지 않나?? 더블체킹한 값으로 넘기는게 더 좋은건가?
         this.answerService.modify(answer, answerForm.getContent()); //기존 답변, 새로작성한 답변내용
 
-        return String.format("redirect:/question/detail/%s",answer.getQuestion().getId()); //질문페이지 출력이니까
+        return String.format("redirect:/question/detail/%s#answer_%s",answer.getQuestion().getId(),answer.getId()); //질문페이지 출력이니까
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -143,7 +143,7 @@ public class AnswerController {
         //비즈니스는 Service에서 처리할 로직이야!
         this.answerService.vote(answer, siteUser);
 
-        return String.format("redirect:/question/detail/%s",answer.getQuestion().getId());
+        return String.format("redirect:/question/detail/%s#answer_%s",answer.getQuestion().getId(),answer.getId());
 
     }
 }

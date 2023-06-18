@@ -5,7 +5,7 @@
         <h2 class="border-bottom py-2" th:text="${question.subject}">질문 제목</h2>
         <div class="card my-3">
             <div class="card-body">
-                <div class="card-text" style="white-space: pre-line;" th:text="${question.content}">질문 내용</div>
+                <div class="card-text"  th:utext="${@commonUtil.markdown(question.content)}">질문 내용</div>
                 <div class="d-flex justify-content-end">
                     <div class="badge bg-light text-dark p-2 text-start mx-3" th:if="${question.modifyDate != null}">
                         <div class="mb-2">수정 일자</div>
@@ -24,6 +24,10 @@
                    th:data-uri="@{|/question/vote/${question.id}|}">추천
                     <span class="badge rounded-pill bg-success" th:text="${#lists.size(question.voter)}"></span>
                 </a>
+                <a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                   th:text="수정">수정 버튼</a>
                 <a class="delete btn btn-sm btn-outline-secondary" href="javascript:void(0);"
                    sec:authorize="isAuthenticated()"
                    th:data-uri="@{|/question/delete/${question.id}|}"
@@ -39,8 +43,9 @@
         <h5 class="border-bottom my-3 py-2" th:text="|${#lists.size(question.answerList)} 개의 답변이 있습니다. |"></h5>
         <!-- 답변 출력-->
         <div class="card my-3" th:each="answer : ${question.answerList}">
+            <a th:id="|answer_${answer.id}|"></a>
             <div class="card-body">
-                <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}">답변 내용</div>
+                <div class="card-text"  th:utext="${@commonUtil.markdown(answer.content)}">답변 내용</div>
                 <div class="d-flex justify-content-end">
                     <div th:if="${answer.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
                         <div class="mb-2">수정 일자</div>
