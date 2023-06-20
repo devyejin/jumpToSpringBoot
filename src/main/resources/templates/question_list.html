@@ -42,7 +42,7 @@
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
                 <!-- 이전페이지가 없으면 class에 disabled 속성 추가-->
-                <a class="page-link" th:href="@{|?page=${paging.number-1}|}">
+                <a class="page-link" href="javascript:void(0)" th:data-page="@{|?page=${paging.number-1}|}">
                     <span>이전</span>
                 </a>
             </li>
@@ -51,25 +51,38 @@
                 th:classappend="${page == paging.number} ? 'active'"
                 th:each=" page :  ${#numbers.sequence(0, paging.totalPages-1)}"
                 th:if="${page >= paging.number -5 and page <= paging.number + 5 }"> <!-- #numberss.sequence 는 (시작, 끝) 시작부터 끝 번호까지 루프 만들어냄 -->
-                <a class="page-link" th:href="@{|?page=${page}|}" th:text="${page}"></a>
+                <a class="page-link" href="javascript:void(0)" th:data-page="@{|?page=${page}|}" th:text="${page}"></a>
             </li>
             <!--            다음 버튼-->
             <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                <a class="page-link" href="javascript:void(0)" th:data-page="@{|?page=${paging.number+1}|}">
                     <span>다음</span>
                 </a>
             </li>
         </ul>
-
     </div>
+<!--    페이징처리 끝-->
+<!--    page, kw 를 동시에 GET 요청할 수 있도록 searchForm 추가-->
+<!--    value ${kw}와 ${paging.number} 은 컨트롤러부터 받은, 이전에 요청했던 kw, page 유지-->
+    <form th:action="@{/question/list}" method="get" id="searchForm">
+        <input type="hidden" id="kw" name="kw" th:value="${kw}">
+        <input type="hidden" id="page" name="page" th:value="${paging.number}">
+    </form>
 <!--    <a class="btn btn-primary" th:href="@{/question/create}">질문 등록하기</a>-->
 </div>
-<script layout:fragment="script" type="text/javascript">
+<script layout:fragment="script" type='text/javascript'>
+    const page_elements = document.getElementsByClassName("page-link");
+    Array.from(page_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            document.getElementById('page').value = this.dataset.page;
+            document.getElementById('searchForm').submit();
+        });
+    });
     const btn_search = document.getElementById("btn_search");
-    btn_search.addEventListener('click', function () {
-        //input에 입력한 값을
+    btn_search.addEventListener('click', function() {
         document.getElementById('kw').value = document.getElementById('search_kw').value;
-    })
-
+        document.getElementById('page').value = 0;  // 검색버튼을 클릭할 경우 0페이지부터 조회한다.
+        document.getElementById('searchForm').submit();
+    });
 </script>
 </html>
