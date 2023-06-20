@@ -1,5 +1,17 @@
 <html layout:decorate="~{layout}">
 <div class="container my-3" layout:fragment="content"> <!-- 템플릿레이아웃  -->
+<!--    질문 등록버튼 , 검색입력창 위치 위로 이동-->
+    <div class="row my-3">
+        <div class="col-6">
+            <a th:href="@{/question/create}" class="btn btn-primary">질문 등록</a>
+        </div>
+        <div class="col-6">
+            <div class="input-group">
+                <input type="text" th:value="${kw}" id="search_kw"  class="form-control">
+                <button id="btn_search" class="btn btn-outline-secondary" type="button"></button>  <!-- js로 이벤트처리  id값 이용-->
+            </div>
+        </div>
+    </div>
     <h2>템플릿</h2>
     <table class="table">
         <thead class="table-dark">
@@ -50,6 +62,14 @@
         </ul>
 
     </div>
-    <a class="btn btn-primary" th:href="@{/question/create}">질문 등록하기</a>
+<!--    <a class="btn btn-primary" th:href="@{/question/create}">질문 등록하기</a>-->
 </div>
+<script layout:fragment="script" type="text/javascript">
+    const btn_search = document.getElementById("btn_search");
+    btn_search.addEventListener('click', function () {
+        //input에 입력한 값을
+        document.getElementById('kw').value = document.getElementById('search_kw').value;
+    })
+
+</script>
 </html>

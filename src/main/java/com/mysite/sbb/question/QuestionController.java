@@ -30,7 +30,9 @@ public class QuestionController {
 
     @GetMapping("/list")
     //페이징 default = 0인 이유는, 스프링부트의 페이징은 0이 첫페에지
-    public String list(Model model, @RequestParam(value="page", defaultValue = "0")int page, Principal principal) {
+    public String list(Model model, @RequestParam(value="page", defaultValue = "0")int page,
+                       Principal principal,
+                       @RequestParam(value="kw", defaultValue = "")String kw) {
 
 
         if(principal != null) {
@@ -38,8 +40,9 @@ public class QuestionController {
             model.addAttribute("loginUsername",user.getUsername());
         }
 
-        Page<Question> paging = this.questionService.getList(page); //paging객체에는 해당 페이지 데이터 + 10개 데이터 출력함
+        Page<Question> paging = this.questionService.getList(page,kw); //paging객체에는 해당 페이지 데이터 + 10개 데이터 출력함
         model.addAttribute("paging", paging);
+        model.addAttribute("kw",kw); //화면에 입력한 값 유지를 위해 model에 담아 넘김
 
         return "question_list";
     }
