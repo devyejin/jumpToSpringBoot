@@ -51,7 +51,7 @@
                 th:classappend="${page == paging.number} ? 'active'"
                 th:each=" page :  ${#numbers.sequence(0, paging.totalPages-1)}"
                 th:if="${page >= paging.number -5 and page <= paging.number + 5 }"> <!-- #numberss.sequence 는 (시작, 끝) 시작부터 끝 번호까지 루프 만들어냄 -->
-                <a class="page-link" href="javascript:void(0)" th:data-page="@{|?page=${page}|}" th:text="${page}"></a>
+                <a class="page-link" href="javascript:void(0)" th:data-page="${page}" th:text="${page}">숫자버튼</a>
             </li>
             <!--            다음 버튼-->
             <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
@@ -81,7 +81,7 @@
     const btn_search = document.getElementById("btn_search");
     btn_search.addEventListener('click', function() {
         document.getElementById('kw').value = document.getElementById('search_kw').value;
-        document.getElementById('page').value = 0;  // 검색버튼을 클릭할 경우 0페이지부터 조회한다.
+        // document.getElementById('page').value = 0;  // 검색버튼을 클릭할 경우 0페이지부터 조회한다.
         document.getElementById('searchForm').submit();
     });
 </script>

@@ -30,9 +30,10 @@ public class QuestionController {
 
     @GetMapping("/list")
     //페이징 default = 0인 이유는, 스프링부트의 페이징은 0이 첫페에지
-    public String list(Model model, @RequestParam(value="page", defaultValue = "0") int page,
-                       Principal principal,
-                       @RequestParam(value="kw", defaultValue = "")String kw) {
+    public String list(@RequestParam(value="page", defaultValue = "0") int page,
+                       @RequestParam(value="kw", defaultValue = "")String kw,
+                       Model model,
+                       Principal principal) {
 
 
         if(principal != null) {
