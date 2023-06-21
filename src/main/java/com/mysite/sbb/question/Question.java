@@ -1,6 +1,7 @@
 package com.mysite.sbb.question;
 
 import com.mysite.sbb.answer.Answer;
+import com.mysite.sbb.comment.Comment;
 import com.mysite.sbb.user.SiteUser;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,5 +38,11 @@ public class Question {
 
     @ManyToMany
     Set<SiteUser> voter; //중복 허용하지 않으므로 Set
+
+    //하나의 질문에, 여러개의 댓글을 가질 수 있음
+    //mappedBy (Comment 엔티티에서 Question 엔티티를 참조한 속성명 작성)
+    //Question이 삭제되면 comment도 삭제되니까 cascade = CascadeType.REMOVE
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    private List<Comment> commentList;
 
 }

@@ -37,6 +37,30 @@
         </div>
     </div>
 
+    <!-- 질문글 댓글 -->
+    <div class="card my-3">
+        <div class="card-body">
+            <h4 class="card-title">댓글</h4>
+            <!-- 댓글 목록을 표시하는 부분 -->
+            <div class="comment-list">
+                <!-- 여기에 댓글 목록을 출력하는 코드를 추가하세요 -->
+            </div>
+
+            <!-- 댓글 작성 폼 -->
+            <form class="comment-form mt-3" th:action="@{/comment/create}" method="post">
+                <input type="hidden" name="questionId" th:value="${question.id}" />
+
+                <div class="mb-3">
+                    <label for="content" class="form-label">댓글 내용</label>
+                    <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">댓글 작성</button>
+            </form>
+        </div>
+    </div>
+
+
     <!--  답변이 있다면 출력하는 로직  질문에서 답변을 가져오기 때문에, question.answerList 임! -->
     <!-- 타임리프 문법에서 #은 제공하는 기본객체임 list객체 제공, session, request등도 마찬가지로 #request로 접근 가능 -->
     <div th:if="${#lists.size(question.answerList) ge 1 }">
@@ -85,8 +109,8 @@
         <textarea class="form-control" rows="10" sec:authorize="isAuthenticated()" th:field="*{content}"></textarea>
         <input class="btn btn-primary my-2" type="submit" value="답변 등록">
     </form>
-</div>
-</div>
+
+
    
     <script layout:fragment="script" type="text/javascript">
         <!--    삭제 버튼에 사용될 JS-->
@@ -112,4 +136,5 @@
             });
         });
     </script>
+</div>
 </html>
