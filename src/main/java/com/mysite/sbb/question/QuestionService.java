@@ -54,7 +54,8 @@ public class QuestionService {
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page,10,Sort.by(sorts)); //해당 page부터 10개의 데이터
         Specification<Question> spec = search(kw);
-        return this.questionRepository.findAll(spec,pageable);
+//        return this.questionRepository.findAll(spec,pageable);
+        return this.questionRepository.findAllByKeyword(kw, pageable);
     }
 
 
