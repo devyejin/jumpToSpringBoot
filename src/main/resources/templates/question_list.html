@@ -1,10 +1,11 @@
 <html layout:decorate="~{layout}">
 <div class="container my-3" layout:fragment="content"> <!-- 템플릿레이아웃  -->
-<!--    질문 등록버튼 , 검색입력창 위치 위로 이동-->
+<!--    질문 등록 -->
     <div class="row my-3">
         <div class="col-6">
             <a th:href="@{/question/create}" class="btn btn-primary">질문 등록</a>
         </div>
+<!--   검색 입력창     -->
         <div class="col-6">
             <div class="input-group">
                 <input type="text" th:value="${kw}" id="search_kw"  class="form-control">

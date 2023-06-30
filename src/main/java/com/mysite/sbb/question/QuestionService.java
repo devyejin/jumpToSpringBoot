@@ -49,7 +49,7 @@ public class QuestionService {
 
     }
 
-    public Page<Question> getList(int page,String kw) {
+    public Page<Question> getList(int page,String kw) { //13, 테스트
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page,10,Sort.by(sorts)); //해당 page부터 10개의 데이터

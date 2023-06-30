@@ -33,28 +33,50 @@
                    th:data-uri="@{|/question/delete/${question.id}|}"
                    th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
                    th:text="삭제">삭제 버튼</a>
+                <button th:text="댓글" class="comment btn btn-sm btn-outline-secondary">댓글 버튼</button>
             </div>
         </div>
     </div>
 
     <!-- 질문글 댓글 -->
-    <div class="card my-3">
+    <div id="comment-section" class="folding card my-3">
         <div class="card-body">
             <h4 class="card-title">댓글</h4>
             <!-- 댓글 목록을 표시하는 부분 -->
             <div class="comment-list">
                 <!-- 여기에 댓글 목록을 출력하는 코드를 추가하세요 -->
+                <div>
+                    <div th:if="${#lists.size(question.commentList) ge 1 }">
+                        <h6  th:text="|${#lists.size(question.commentList)} 개의 댓글이 있습니다.|"></h6>
+                        <!--댓글 출력-->
+                        <div th:each= "comment :${question.commentList}">
+                        <div class="card-body">
+                            <div class="card-text"  th:text="${comment.content}">답변 내용</div>
+                            <div class="d-flex justify-content-end">
+                                <div th:if="${comment.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                                    <div class="mb-2">수정 일자</div>
+                                    <div th:text="${#temporals.format(comment.modifyDate,'yyyy-MM-dd HH:mm')}">수정 일자 출력 칸</div>
+                                </div>
+                                <div class="badge bg-light text-dark p-2 text-start">
+                                    <div class="mb-2">
+                                        <span th:if="${comment.author != null}" th:text="${comment.author.username}">작성자</span>
+                                    </div>
+                                    <div th:text="${#temporals.format(comment.createDate,'yyyy-MM-dd HH:mm')}">답변 입력날짜 출력</div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- 댓글 작성 폼 -->
-            <form class="comment-form mt-3" th:action="@{/comment/create}" method="post">
-                <input type="hidden" name="questionId" th:value="${question.id}" />
-
+            <form class="comment-form mt-3" th:action="@{|/comment/create/${question.id}|}" method="post">
+<!--                <input type="hidden" name="questionId" th:value="${question.id}" /> -->
                 <div class="mb-3">
                     <label for="content" class="form-label">댓글 내용</label>
                     <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
                 </div>
-
                 <button type="submit" class="btn btn-primary">댓글 작성</button>
             </form>
         </div>
@@ -135,6 +157,24 @@
                 };
             });
         });
+
+        <!-- 댓글 버튼 누르면 댓글과 댓글 입력창 출력-->
+        let comment_elements = document.getElementsByClassName("comment");
+        Array.from(comment_elements).forEach(function (element) {
+            element.addEventListener('click', function () {
+                //댓글 창 출력
+                console.log('클릭 발생');
+                const comment_section = document.getElementById('comment-section');
+                comment_section.classList.toggle('folding');
+            })
+        })
+
     </script>
+
+    <style>
+        .folding {
+            display : none;
+        }
+    </style>
 </div>
 </html>
