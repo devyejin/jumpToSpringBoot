@@ -23,7 +23,8 @@ DataBase
 ---
 
 # ERD 설계
-![dbms](https://github.com/devyejin/jumpToSpringBoot/assets/109127968/f4dc2199-fbd6-483a-af07-70eec8b6349c)
+![dbms](https://github.com/devyejin/jumpToSpringBoot/assets/109127968/2e91a52a-8875-4a3a-8d2a-1fa28d658b81)
+
 
 
 
