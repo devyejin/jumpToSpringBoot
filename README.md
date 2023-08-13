@@ -23,8 +23,8 @@ DataBase
 ---
 
 # ERD 설계
-![sbb](https://github.com/devyejin/jumpToSpringBoot/assets/109127968/6eb16e0a-b35d-49a6-826e-4b12b62e97f4)
 
+![sbb](https://github.com/devyejin/jumpToSpringBoot/assets/109127968/e304f45d-1c4f-43a8-8ae8-0db1c89b682c)
 
 
 # 주요 기능
