@@ -1,3 +1,4 @@
+# 스프링 부트를 이용한 게시판 서비스
 
 
 # 사용 기술
@@ -22,6 +23,8 @@ DataBase
 ---
 
 # ERD 설계
+![sbb](https://github.com/devyejin/jumpToSpringBoot/assets/109127968/6eb16e0a-b35d-49a6-826e-4b12b62e97f4)
+
 
 
 # 주요 기능
@@ -37,9 +40,7 @@ DataBase
 
 # 시연 
 - 회원가입
-
 ![회원가입](https://github.com/devyejin/jumpToSpringBoot/assets/109127968/68cc64f1-fb39-46a2-9ea3-1f516b27b38b)
-
 
 - 검색
 ![회원가입](https://github.com/devyejin/jumpToSpringBoot/assets/109127968/53811a4d-e881-4cdf-9926-4d16ae3b4a40)
